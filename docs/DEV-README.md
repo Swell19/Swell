@@ -68,11 +68,11 @@ WSL and Electron do not work well together without some additional steps - the a
 2. In your WSL system's `.bashrc` file, typically located in you user folder `\\wsl.localhost\<distro-name>\home\<username>\`, add the following line to the end of the file:
    - `` export DISPLAY="`sed -n 's/nameserver //p' /etc/resolv.conf`:0" ``
    - **PLEASE NOTE: Any time you make changes to the main WSL files like `.bashrc` or `.profile` (especially if troubleshooting later), you will need to restart you entire WSL (Not just shutdown VSCode) in order for the changes to take effect. Save your work/changes, close VSCode, open a windows terminal and type in `wsl --shutdown`. You should then be able to boot up as you normally do with the new settings applied.**
-3. Install XServer, specifically VcsXsrv:
+3. Install XServer, specifically VcXsrv:
    - If you have chocolatey installed on Windows, you can run the following command from the Windows command line or from PowerShell `choco install vcxsrv`
      - See [here](https://community.chocolatey.org/packages/vcxsrv) for the link on more information about this package. Other repo management tools for Windows are perfectly fine as well (i.e `scoop.sh` or such).
      - See [this link](https://chocolatey.org/install) if you don't have a package manager for Windows to get started using Chocolatey.
-     - Once installed open VcsXsrv (should be listed and searchable as `XLaunch` in Windows) and it’ll guide you through three config screens. Here’s what to pick on each one:
+     - Once installed open VcXsrv (should be listed and searchable as `XLaunch` in Windows) and it’ll guide you through three config screens. Here’s what to pick on each one:
        - Choose Multiple Windows  
          ![alt text](vcxsrv_display_settings.png)
        - Choose ‘Start no client’  
@@ -188,16 +188,16 @@ It is also important to note that props are being drilled down from MainContaine
 ### _CSP Changes and Improvements_
 
 #### nonce/sha-256 CSP script/style changes
+
 - Added CSP nonce to the scripts being ran in the app to prevent potential XSS attacks
 - Implemented a cache to catch Material UI dynamic styling – still need to a way to parse nonce value from webpack into the cache [index.js]
 - Moved rendering from index.js and moved entry point to index-csp.html and used webpack as template
 - Added nonce generation and potential sha-256 generation for from webpack
 
 #### Remaining Items to Implement
+
 - Nonce is currently generated once per build – find a way to change nonce on every launch
 - Find a way to integrate nonce into material ui cache on index.js
-
-
 
 ### _Enhance HTTP/2 Mock server functionality_
 
