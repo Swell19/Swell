@@ -11,44 +11,48 @@ module.exports = merge(base, {
     open: '/dev',
     hot: true,
     compress: true,
-    proxy: {
-      '/webhookServer': {
+    proxy: [
+      {
+        context: ['/webhookServer'],
         target: 'http://localhost:3000',
       },
-      '/webhook': {
+      {
+        context: ['/webhook'],
         target: 'http://localhost:3000',
       },
-      '/api': {
+      {
+        context: ['/api'],
         target: 'http://localhost:3000',
         /**
          * @todo Change secure option to true, and refactor code to account for
          * change
          */
         secure: false,
-      },
-    },
-    setupMiddlewares: (middlewares, devServer) => {
-      if (!devServer) {
-        throw new Error('webpack-dev-server is not defined');
       }
-      middlewares.unshift({
-        // unshift does not work, ends in infinite calls to this function
-        name: 'run-in-electron',
-        path: '/dev',
-        middleware: (req, res) => {
-          spawn('npx electron --dev .', {
-            shell: true,
-            env: process.env,
-            stdio: 'inherit',
-          })
-            .on('close', () => process.exit(130))
-            .on('error', (spawnError) => console.error(spawnError));
-          return res
-            .status(200)
-            .send('Opened the Electron app in development mode.');
-        },
-      });
-      return middlewares;
+    ],
     },
+    // setupMiddlewares: (middlewares, devServer) => {
+    //   if (!devServer) {
+    //     throw new Error('webpack-dev-server is not defined');
+    //   }
+    //   middlewares.unshift({
+    //     // unshift does not work, ends in infinite calls to this function
+    //     name: 'run-in-electron',
+    //     path: '/dev',
+    //     middleware: (req, res) => {
+    //       spawn('npx electron --dev .', {
+    //         shell: true,
+    //         env: process.env,
+    //         stdio: 'inherit',
+    //       })
+    //         .on('close', () => process.exit(130))
+    //         .on('error', (spawnError) => console.error(spawnError));
+    //       return res
+    //         .status(200)
+    //         .send('Opened the Electron app in development mode.');
+    //     },
+    //   });
+    //   return middlewares;
+    // },
   },
-});
+);
